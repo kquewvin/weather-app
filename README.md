@@ -1,0 +1,3 @@
+Simple Weather Application
+
+This weather application allows users to search for cities and view real-time weather information, including temperature, weather description. The app also provides a feature to save a favourite city, storing them in the browser’s localStorage so that they persist across page refreshes. The application addresses the need for quick, convenient access to weather data for multiple cities, with the added benefit of remembering the user’s favorite location for future reference. It’s designed to provide a user-friendly experience for anyone looking to stay informed about the weather.
