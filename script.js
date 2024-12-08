@@ -7,7 +7,7 @@ let apiKey = "";
 
 // Use objects to organize and manage application data
 const appState = {
-	favourites: [], // Stores favorite cities
+	favourites: [], // Stores favourite city
 	weatherData: {}, // Stores the latest weather data
 };
 
@@ -64,8 +64,8 @@ function displayWeather(data) {
 	list.appendChild(li);
 }
 
-// Save favorite city
-function saveFavorite(cityData) {
+// Save favourite city
+function saveFavourite(cityData) {
 	let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
 
 	// Add favourite city
@@ -107,7 +107,7 @@ form.addEventListener("submit", (e) => {
 // Handle save button clicks
 list.addEventListener("click", (e) => {
 	if (e.target.classList.contains("save-btn")) {
-		saveFavorite(appState.weatherData);
+		saveFavourite(appState.weatherData);
 	}
 });
 
