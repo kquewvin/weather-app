@@ -1,29 +1,42 @@
-/*SEARCH BY USING A CITY NAME (e.g. athens) OR A COMMA-SEPARATED CITY NAME ALONG WITH THE COUNTRY CODE (e.g. athens,gr)*/
-const form = document.querySelector(".top-banner form");
-const input = document.querySelector(".top-banner input");
+const form = document.querySelector("#city-search");
+const input = document.querySelector("#city-input");
 const msg = document.querySelector(".top-banner .msg");
 const list = document.querySelector(".ajax-section .cities");
-import config from "./config.json";
 
-const apiKey = config.apiKey;
+// Getting API key from config file
+let apiKey = "";
+fetch("./config.json")
+	.then((response) => {
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
+		return response.json();
+	})
+	.then((config) => {
+		apiKey = config.apiKey;
+		console.log("API key loaded");
+	})
+	.catch((error) => {
+		console.log("Error loading config:", error);
+	});
 
+// Updating web page with weather information
 form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const listItems = list.querySelectorAll(".ajax-section .city");
-  const inputVal = input.value;
+	e.preventDefault();
+	const inputVal = input.value;
 
-  //ajax here
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
+	//AJAX section
+	const url = `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${apiKey}&units=metric`;
 
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      const { main, name, sys, weather } = data;
-      const icon = `https://openweathermap.org/img/wn/${weather[0]["icon"]}@2x.png`;
-
-      const li = document.createElement("li");
-      li.classList.add("city");
-      const markup = `
+	fetch(url)
+		.then((response) => response.json())
+		.then((data) => {
+			console.log("Data fetched");
+			const { main, name, sys, weather } = data;
+			const icon = `https://openweathermap.org/img/wn/${weather[0]["icon"]}@2x.png`;
+			const li = document.createElement("li");
+			li.classList.add("city");
+			const markup = `
         <h2 class="city-name" data-name="${name},${sys.country}">
             <span>${name}</span>
             <sup>${sys.country}</sup>
@@ -34,14 +47,19 @@ form.addEventListener("submit", (e) => {
             <figcaption>${weather[0]["description"]}</figcaption>
         </figure>
         `;
-      li.innerHTML = markup;
-      list.appendChild(li);
-    })
-    .catch(() => {
-      msg.textContent = "Please search for a valid city";
-    });
+			li.innerHTML = markup;
+			list.appendChild(li);
+		})
+		.catch((error) => {
+			console.log("Error:", error);
+			msg.textContent = "Please search for a valid city";
+		});
 
-  msg.textContent = "";
-  form.reset();
-  input.focus();
+	msg.textContent = "";
+	form.reset();
+	input.focus();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+	console.log("DOM loaded");
 });
